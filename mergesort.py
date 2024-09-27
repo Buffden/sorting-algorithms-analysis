@@ -1,6 +1,7 @@
 import sys
-import math
+import time
 
+# Function to calculate the sum of ascii values of all the letters in the combination
 def calculate_ascii_sum(combination):
     ascii_sum = sum(ord(c) for c in combination)
     return ascii_sum
@@ -19,8 +20,8 @@ def merge(A, p, q, r):
     n2 = r - q
 
     # Create temp arrays for Left and Right
-    L = [0] * n1
-    R = [0] * n2
+    L = A[:n1]
+    R = A[:n2]
 
     # Copy data to temp arrays from A
     for i in range(n1):
@@ -29,10 +30,10 @@ def merge(A, p, q, r):
         R[j] = A[q + 1 + j]
 
     i = 0  
-    j = 0  
-    k = p  
+    j = 0    
 
     # Compare elements in the left and right arrays and merge both into A
+    k = p
     while i < n1 and j < n2:
         if calculate_ascii_sum(L[i]) <= calculate_ascii_sum(R[j]):
             A[k] = L[i]
@@ -65,7 +66,14 @@ def merge_sort(A, p, r):
         merge_sort(A, q + 1, r)
         merge(A, p, q, r)
 
+# Log the start time
+start = time.time()
+
 merge_sort(combinations, 0, len(combinations) - 1)
+
+print("Time taken to sort our arrays", time.time() - start)
+
+# print("Sorted combinations - ", combinations)
 
 # Save the sorted list to the output file
 with open(output_file, 'w+') as file:

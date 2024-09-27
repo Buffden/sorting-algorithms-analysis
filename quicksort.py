@@ -1,5 +1,7 @@
 import sys
+import time
 
+# Function to calculate the sum of ascii values of all the letters in the combination
 def calculate_ascii_sum(combination):
     ascii_sum = sum(ord(c) for c in combination)
     return ascii_sum
@@ -24,7 +26,14 @@ def quick_sort(A):
         right = [x for x in A if calculate_ascii_sum(x) > calculate_ascii_sum(pivot)]  
         return quick_sort(left) + middle + quick_sort(right)
 
+# Log the start time
+start = time.time()
+
 combinations = quick_sort(combinations)
+
+print("Time taken to sort our arrays", time.time() - start)
+
+# print("Sorted combinations - ", combinations)
 
 # Save the sorted list to the output file
 with open(output_file, 'w+') as file:
