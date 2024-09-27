@@ -1,4 +1,5 @@
 import argparse
+import time
 
 def ascii_sum(line):
     return sum(ord(char) for char in line)
@@ -25,7 +26,9 @@ def main():
     with open(args.dataset, 'r') as input_file:
         lines = input_file.read().strip().splitlines()
 
+    start = time.time()
     sorted_lines = quick_sort(lines)
+    print('time taken by quicksort ', time.time() - start)
 
     with open(args.output_file, 'w') as output_file:
         output_file.write('\n'.join(sorted_lines))
