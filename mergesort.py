@@ -43,7 +43,7 @@ def merge(A, p, q, r):
             j += 1
         k += 1
 
-    # In the above loop, we only add the smaller value from either the left (L) or right (R) array to A[k].
+    # In the above loop, we only add the smaller value from either the left or the right array to A.
     # The remaining elements, which are larger and may still be in either L or R, have not been added yet.
     # We handle that below by copying any leftover elements from L or R into A.
     while i < n1:
@@ -71,9 +71,9 @@ start = time.time()
 
 merge_sort(combinations, 0, len(combinations) - 1)
 
-print("Time taken to sort our arrays", time.time() - start)
+print("Time taken to sort our arrays using Merge Sort", time.time() - start)
 
-# print("Sorted combinations - ", combinations)
+print("Sorted combinations - ", combinations)
 
 # Save the sorted list to the output file
 with open(output_file, 'w+') as file:

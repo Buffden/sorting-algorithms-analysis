@@ -30,9 +30,9 @@ for j in range(1, len(combinations)):
         i = i-1
     combinations[i+1] = key
 
-print("Time taken to sort our arrays", time.time() - start)
+print("Time taken to sort our arrays using Insertion Sort", time.time() - start)
 
-# print("Sorted combinations - ", combinations)
+print("Sorted combinations - ", combinations)
 
 # Save the sorted list to the output file
 with open(output_file, 'w+') as file:
