@@ -1,3 +1,4 @@
+### Phase 2
 import sys
 import time
 
@@ -15,21 +16,19 @@ with open(input_dataset, 'r') as file:
 # Take filename of output dataset as input from the user
 output_file = sys.argv[2]
 
-
-def quick_sort(A):
-    if len(A) <= 1: 
-        return A
-    else:
-        pivot = A[len(A) // 2]  
-        left = [x for x in A if calculate_ascii_sum(x) < calculate_ascii_sum(pivot)]   
-        middle = [x for x in A if calculate_ascii_sum(x) == calculate_ascii_sum(pivot)]  
-        right = [x for x in A if calculate_ascii_sum(x) > calculate_ascii_sum(pivot)]  
-        return quick_sort(left) + middle + quick_sort(right)
-
 # Log the start time
 start = time.time()
 
-combinations = quick_sort(combinations)
+# Loop through the combinations
+for j in range(1, len(combinations)):
+    # Assign a value to our key which will then be compared to the ith element
+    key = combinations[j]
+    i = j-1
+    # Check if the ascii sum of the ith element is greater than the ascii sum of key
+    while (i>=0) & (calculate_ascii_sum(combinations[i])>calculate_ascii_sum(key)):
+        combinations[i+1] = combinations[i]
+        i = i-1
+    combinations[i+1] = key
 
 print("Time taken to sort our arrays", time.time() - start)
 

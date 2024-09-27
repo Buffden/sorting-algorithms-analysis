@@ -1,51 +1,80 @@
-import argparse
+import sys
 import time
 
-def ascii_sum(line):
-    return sum(ord(char) for char in line)
+# Function to calculate the sum of ascii values of all the letters in the combination
+def calculate_ascii_sum(combination):
+    ascii_sum = sum(ord(c) for c in combination)
+    return ascii_sum
 
-def merge_sort(lines):
-    if len(lines) <= 1:
-        return lines
+# Take filename of input dataset as input from the user
+input_dataset = sys.argv[1]
 
-    mid = len(lines) // 2
-    left_half = merge_sort(lines[:mid])
-    right_half = merge_sort(lines[mid:])
+with open(input_dataset, 'r') as file:
+    combinations = file.read().split()
 
-    return merge(left_half, right_half)
+# Take filename of output dataset as input from the user
+output_file = sys.argv[2]
 
-def merge(left, right):
-    sorted_list = []
-    i = j = 0
+def merge(A, p, q, r):
+    n1 = q - p + 1
+    n2 = r - q
 
-    while i < len(left) and j < len(right):
-        if ascii_sum(left[i]) <= ascii_sum(right[j]):
-            sorted_list.append(left[i])
+    # Create temp arrays for Left and Right
+    L = A[:n1]
+    R = A[:n2]
+
+    # Copy data to temp arrays from A
+    for i in range(n1):
+        L[i] = A[p + i]
+    for j in range(n2):
+        R[j] = A[q + 1 + j]
+
+    i = 0  
+    j = 0    
+
+    # Compare elements in the left and right arrays and merge both into A
+    k = p
+    while i < n1 and j < n2:
+        if calculate_ascii_sum(L[i]) <= calculate_ascii_sum(R[j]):
+            A[k] = L[i]
             i += 1
         else:
-            sorted_list.append(right[j])
+            A[k] = R[j]
             j += 1
+        k += 1
 
-    sorted_list.extend(left[i:])
-    sorted_list.extend(right[j:])
+    # In the above loop, we only add the smaller value from either the left (L) or right (R) array to A[k].
+    # The remaining elements, which are larger and may still be in either L or R, have not been added yet.
+    # We handle that below by copying any leftover elements from L or R into A.
+    while i < n1:
+        A[k] = L[i]
+        i += 1
+        k += 1
+    
+    while j < n2:
+        A[k] = R[j]
+        j += 1
+        k += 1
 
-    return sorted_list
+# Function to perform mergesort
+def merge_sort(A, p, r):
+    if p < r:
+        # Calculate median
+        q = (p + r) // 2
+        # Recursively sort the elements
+        merge_sort(A, p, q)
+        merge_sort(A, q + 1, r)
+        merge(A, p, q, r)
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("dataset")
-    parser.add_argument("output_file")
-    args = parser.parse_args()
+# Log the start time
+start = time.time()
 
-    with open(args.dataset, 'r') as input_file:
-        lines = input_file.read().strip().splitlines()
+merge_sort(combinations, 0, len(combinations) - 1)
 
-    start = time.time()
-    sorted_lines = merge_sort(lines)
-    print('time taken by merge sort ', time.time() - start)
+print("Time taken to sort our arrays", time.time() - start)
 
-    with open(args.output_file, 'w') as output_file:
-        output_file.write('\n'.join(sorted_lines))
+# print("Sorted combinations - ", combinations)
 
-if __name__ == "__main__":
-    main()
+# Save the sorted list to the output file
+with open(output_file, 'w+') as file:
+    file.write("\n".join(combinations))
